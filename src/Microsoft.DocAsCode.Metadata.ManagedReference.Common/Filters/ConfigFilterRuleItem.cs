@@ -3,6 +3,7 @@
 
 namespace Microsoft.DocAsCode.Metadata.ManagedReference
 {
+    using FilterDebugging;
     using System;
     using System.Text.RegularExpressions;
 
@@ -10,6 +11,9 @@ namespace Microsoft.DocAsCode.Metadata.ManagedReference
 
     public abstract class ConfigFilterRuleItem
     {
+        [YamlIgnore]
+        public int id = -1;
+
         private Regex _uidRegex;
 
         [YamlMember(Alias = "uidRegex")]
@@ -41,10 +45,24 @@ namespace Microsoft.DocAsCode.Metadata.ManagedReference
                 throw new ArgumentNullException("symbol");
             }
             var id = symbol.Id;
-            
-            return (_uidRegex == null || (id != null && _uidRegex.IsMatch(id))) &&
+
+            var isMatch = (_uidRegex == null || (id != null && _uidRegex.IsMatch(id))) &&
                 (Kind == null || Kind.Value.Contains(symbol)) &&
                 (Attribute == null || Attribute.ContainedIn(symbol));
+
+            if (id != null && isMatch)
+            {
+                var uidRegexMatch = UidRegex != null ? _uidRegex.IsMatch(id) : false;
+                var kindMatch = Kind != null ? Kind.Value.Contains(symbol) : false;
+                ReportGenerator.Instance.RecordMatch(
+                    symbolUid: symbol.Id,
+                    ruleId: this.id,
+                    matchedMemberUid: uidRegexMatch,
+                    matchedKind: kindMatch
+                );
+            }
+            
+            return isMatch;
         }
     }
 }

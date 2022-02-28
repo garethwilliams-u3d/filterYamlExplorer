@@ -12,6 +12,7 @@ namespace Microsoft.DocAsCode.Metadata.ManagedReference
     using YamlDotNet.Serialization;
 
     using Microsoft.DocAsCode.Common;
+    using FilterDebugging;
 
     [Serializable]
     public class ConfigFilterRule
@@ -89,6 +90,11 @@ namespace Microsoft.DocAsCode.Metadata.ManagedReference
             else
             {
                 userRule = Load(filterConfigFile);
+                RecordRules(userRule.ApiRules, true, true);
+                RecordRules(userRule.AttributeRules, true, false);
+                RecordRules(defaultRule.ApiRules, false, true);
+                RecordRules(defaultRule.AttributeRules, false, false);
+
                 return Merge(defaultRule, userRule);
             }
         }
@@ -101,6 +107,46 @@ namespace Microsoft.DocAsCode.Metadata.ManagedReference
                 ApiRules = userRule.ApiRules.Concat(defaultRule.ApiRules).ToList(),
                 AttributeRules = userRule.AttributeRules.Concat(defaultRule.AttributeRules).ToList(),
             };
+        }
+
+        private static void RecordRules(
+            List<ConfigFilterRuleItemUnion> rules,
+            bool userDefined,
+            bool isApiRule
+        )
+        {
+            for (int index = 0; index < rules.Count; index++)
+            {
+                var unionRule = rules[index];
+                var isIncludeRule = unionRule.Include != null;
+                var ruleId = ReportGenerator.Instance.AddRule
+                (
+                    userDefined, 
+                    isApiRule,
+                    isIncludeRule,
+                    index
+                );
+                unionRule.Rule.id = ruleId;
+
+                var ruleItem = unionRule.Rule;
+                ReportGenerator.Instance.addMemberUidRegex
+                (
+                    ruleId, 
+                    ruleItem.UidRegex != null ? ruleItem.UidRegex.ToString() : null
+                );
+                ReportGenerator.Instance.AddKind(ruleId, ruleItem.Kind.ToString());
+
+                var attribute = ruleItem.Attribute;
+                if (attribute != null)
+                {
+                    ReportGenerator.Instance.AddAttribute(
+                        ruleId,
+                        attribute.Uid,
+                        attribute.ConstructorArguments,
+                        attribute.ConstructorNamedArguments
+                    );
+                }
+            }
         }
     }
 }

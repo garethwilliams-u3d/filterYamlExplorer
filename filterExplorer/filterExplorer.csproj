@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{318314EF-71CF-45AF-83C9-6DCED1675043}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>filterExplorer</RootNamespace>
+    <AssemblyName>filterExplorer</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\TestClass.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Resources\TestFilter.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis">
+      <Version>3.9.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ReportGenerator\ReportGenerator.csproj">
+      <Project>{95c6c6a7-42f5-425a-8d3f-cb96a73594ab}</Project>
+      <Name>ReportGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\Microsoft.DocAsCode.DataContracts.ManagedReference\Microsoft.DocAsCode.DataContracts.ManagedReference.csproj">
+      <Project>{2e5c8660-a883-4d32-bf67-cf5907ab1f1f}</Project>
+      <Name>Microsoft.DocAsCode.DataContracts.ManagedReference</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\Microsoft.DocAsCode.Metadata.ManagedReference.Common\Microsoft.DocAsCode.Metadata.ManagedReference.Common.csproj">
+      <Project>{416f45eb-0228-43ee-8893-c87db2ef727d}</Project>
+      <Name>Microsoft.DocAsCode.Metadata.ManagedReference.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\Microsoft.DocAsCode.Metadata.ManagedReference.Roslyn\Microsoft.DocAsCode.Metadata.ManagedReference.Roslyn.csproj">
+      <Project>{416f45eb-0228-43ee-1234-c87db2ef727d}</Project>
+      <Name>Microsoft.DocAsCode.Metadata.ManagedReference.Roslyn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\Microsoft.DocAsCode.Metadata.ManagedReference\Microsoft.DocAsCode.Metadata.ManagedReference.csproj">
+      <Project>{b06bd0fd-5276-4929-87f4-48c302245c02}</Project>
+      <Name>Microsoft.DocAsCode.Metadata.ManagedReference</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

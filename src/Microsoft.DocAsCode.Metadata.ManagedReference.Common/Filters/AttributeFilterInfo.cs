@@ -3,6 +3,7 @@
 
 namespace Microsoft.DocAsCode.Metadata.ManagedReference
 {
+    using FilterDebugging;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -41,6 +42,16 @@ namespace Microsoft.DocAsCode.Metadata.ManagedReference
                 // namedarguments need to be a superset of the config
                 if (!ConstructorNamedArguments.Except(attribute.ConstructorNamedArguments).Any())
                 {
+                    ReportGenerator.Instance.RecordMatch(
+                        symbol.Id,
+                        matchedAttributeUid: true,
+                        matchedAttributeConstructorArgs: 
+                        (
+                            ConstructorArguments != null 
+                            && ConstructorArguments.SequenceEqual(attribute.ConstructorArguments)
+                        ),
+                        matchedAttributeNamedConstructorArgs: true
+                    );
                     result = true;
                     break;
                 }
