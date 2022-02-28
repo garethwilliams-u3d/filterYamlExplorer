@@ -12,8 +12,12 @@ This proof of concept tool attempts to provide a way to speed up the understandi
 
 ### Usage
 
+- create a single `.cs file` containing the feature(s) you want to test filtering on (or edit the one in `\Resources`)
+- create a `filter.yml` containing the rule(s) you want to test (or edit the one in `\Resources`)
+- generate a report using `filterExplorer`
+
 ```
-filterExplorer.exe <path/to/filter.yml> <path/to/class.cs>
+filterExplorer.exe <path/to/filter.yml> <path/to/file.cs>
 ```
 
 #### Full usage
